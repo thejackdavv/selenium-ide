@@ -14,14 +14,18 @@ using NUnit.Framework;
 [TestFixture]
 public class TC01IfUserIsInvalidTryAgainTest
 {
-    private IWebDriver driver;
+    private IWebDriver driver = null!;
     public IDictionary<string, object> vars { get; private set; }
     private IJavaScriptExecutor js;
 
     [SetUp]
     public void SetUp()
     {
-        driver = new ChromeDriver();
+        var options = new ChromeOptions();
+        options.AddArgument("--headless");
+        options.AddArgument("--no-sandbox");
+        options.AddArgument("--disable-dev-shm-usage");
+        driver = new ChromeDriver(options);
         js = (IJavaScriptExecutor)driver;
         vars = new Dictionary<string, object>();
     }
@@ -29,7 +33,7 @@ public class TC01IfUserIsInvalidTryAgainTest
     [TearDown]
     protected void TearDown()
     {
-        driver.Quit();
+        driver?.Quit();
     }
 
     [Test]
